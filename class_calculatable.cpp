@@ -1,99 +1,79 @@
 #include <iostream>
 #include <string>
-#include <exception>
 using namespace std;
 
-#define error_115 "a cannot be -"
-
-class Calculatable
+void print(int* arr, int n){
+for(int i=0; i<n; i++)
 {
-  public:
-  double virtual calc(int n)=0;
-};
-
-class C1: public Calculatable
-{
-public:
-double a;
-C1(double a)
-{
-  this->a=a;
+  cout<<arr[i]<<" ";
+}
+cout<<endl<<endl;
 }
 
-double calc(int n)
-{
-  if(n==0){
-    //throw exception();
-    throw "n cannot be 0";
-  }
-  if (a<0){
-    //throw "a cannot be negative";
-    throw 115;
-  }
-  double sum=a;
-  for(int i=2; i<=n; i++)
+int* mirror(int* arr, int n){
+int* arr2= new int[n];
+for(int i=n-1, j=0; i>=0; i--, j++)
   {
-    sum += a/i;
+    arr2[j]=arr[i];
   }
-  return sum;
-}
-};
-
-
-class C2: public C1
-{
-public:
-double b;
-C2(double a, double b):C1(a)
-{
-  this->b=b;
+  return arr2;
 }
 
-double calc(int n)
+int** mirror(int** arr, int  k, int l)
 {
-  if(n==0){
-    //throw exception();
-    throw "n cannot be 0";
-  }
+int** arr2= new int*[k];
+for(int i=0; i<k; i++)
+{
+  arr2[i]=new int[l];
+}
 
-  if (a<0){
-    throw "a cannot be negative";
-  }
-
-  double sum=b+a;
-  for (int i=2; i<=n; i++)
+  for(int i=0; i<k; i++)
   {
-    sum+=b/i;
+    for(int a=l-1,j=0; a>=0; a--, j++)
+    {
+      arr2[i][j]=arr[i][a];
+    }
   }
-  return sum;
+  return arr2;
 }
 
-};
+void print(int** arr, int k, int l){
+  for(int i=0; i<k; i++){
+    for (int j=0; j<l; j++){
+      int a = arr[i][j];
+      cout<<a<<(a<10?"   ":(a<100?"  ":" "));
+    }
+    cout<<endl;
+  }
+}
+
 
 
 int main() {
 
-  try{
+int n=5;
+int* arr = new int[n]{1,2,3,4,5};
+int*  m = mirror(arr, n);
+print(m, n);
 
-  C1 c1(10);
-  C2 c2(15,10);
-  cout<<c1.calc(5)<<endl;
-  cout<<c2.calc(3)<<endl;
+int k=5;
+int l=4;
+int** arr2 = new int*[k];
+for(int i=0; i<k; i++){
+  arr2[i]=new int[l]{};
+}
 
-  Calculatable* c;
-  c  = new C1(22);
-  cout<<c->calc(15)<<endl;
-  delete c;
+for(int i=0; i<k; i++)
+{
+  for(int j=0; j<l; j++)
+  {
+    arr2[i][j]= i*i*j*j + i+j;
+  }
+}
 
-  c= new C2(-90, 4);
-  cout<<c->calc(2)<<endl;
-  delete c;
-}
-catch(const char* ex){
-  cout<<ex<<endl;
-}
-catch(int ex){
-  cout<<"exception error No " << ex<<endl;
-}
+int** m2= mirror(arr2, k, l);
+
+print(m2, k, l);
+
 
 }
